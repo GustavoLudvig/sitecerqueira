@@ -111,7 +111,12 @@ function App() {
     }));
   }, [filteredProducts]);
 
-  const visibleProducts = filteredProducts.slice(0, visibleCount);
+  const regularProducts = filteredProducts.filter((p) => p.id !== 'custom1');
+  const customProduct = filteredProducts.find((p) => p.id === 'custom1');
+  const visibleProducts = [
+    ...regularProducts.slice(0, visibleCount),
+    ...(customProduct ? [customProduct] : []),
+  ];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -123,13 +128,13 @@ function App() {
   useEffect(() => {
     const handleScroll = () => {
       const threshold = window.innerHeight + window.scrollY;
-      if (threshold > document.body.offsetHeight - 360 && visibleCount < filteredProducts.length) {
-        setVisibleCount((current) => Math.min(current + 8, filteredProducts.length));
+      if (threshold > document.body.offsetHeight - 360 && visibleCount < regularProducts.length) {
+        setVisibleCount((current) => Math.min(current + 8, regularProducts.length));
       }
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [visibleCount, filteredProducts.length]);
+  }, [visibleCount, regularProducts.length]);
 
   useEffect(() => {
     setVisibleCount(12);
@@ -325,11 +330,11 @@ function App() {
             );
           })}
 
-          {visibleProducts.length < filteredProducts.length && (
+          {regularProducts.slice(0, visibleCount).length < regularProducts.length && (
             <div className="mx-auto mt-6 flex max-w-5xl justify-center">
               <button
                 type="button"
-                onClick={() => setVisibleCount((current) => Math.min(current + 8, filteredProducts.length))}
+                onClick={() => setVisibleCount((current) => Math.min(current + 8, regularProducts.length))}
                 className="rounded-full bg-[#d4af37] px-8 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-black transition hover:bg-[#bf9b2f]"
               >
                 Carregar mais
