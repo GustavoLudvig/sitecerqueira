@@ -261,56 +261,61 @@ function App() {
                   </div>
                 </div>
                 <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-                  {visibleInSection.map((product) => (
-                    <article key={product.id} className="group overflow-hidden rounded-[2rem] border border-white/10 bg-[#0e0a08] shadow-luxury transition hover:-translate-y-1 hover:shadow-soft">
-                      <div
-                        className="aspect-[4/5] bg-cover bg-center p-5"
-                        style={{ backgroundImage: brandAccent[product.brand] || 'linear-gradient(135deg, #151515, #3c2f24)' }}
-                      >
-                        <div className="flex h-full flex-col justify-between rounded-[1.75rem] bg-black/30 p-5 text-white backdrop-blur-sm">
-                          <div className="w-full rounded-[1rem] bg-white/90 p-3">
-                            <img
-                              src={`/assets/perfumes/${product.id}.png`}
-                              alt={product.name}
-                              className="mx-auto w-full object-contain aspect-[4/3]"
-                            />
-                          </div>
-                          <div className="space-y-3">
-                            <span className="inline-flex rounded-full bg-black/60 px-3 py-1 text-[11px] uppercase tracking-[0.28em] text-[#d4af37]">{product.brand}</span>
-                            <h4 className="text-2xl font-semibold leading-tight">{product.name}</h4>
-                          </div>
-                          <div className="space-y-2">
-                            <p className="text-sm uppercase tracking-[0.2em] text-white/80">{product.variant}</p>
-                            {product.brand === 'Escolha Personalizada' ? (
-                              <a
-                                href="https://wa.me/554898098886?text=Ol%C3%A1%2C%20gostaria%20de%20fazer%20meu%20pedido%20personalizado%20com%20o%20vendedor!"
-                                target="_blank"
-                                rel="noreferrer"
-                                className="block w-full rounded-3xl bg-[#25d366] px-4 py-3 text-center text-base font-semibold text-white shadow-lg transition hover:bg-[#1ebe5d]"
-                              >
-                                💬 Solicitar no WhatsApp
-                              </a>
-                            ) : (
-                              <div className="rounded-3xl bg-white/90 px-4 py-3 text-xl font-semibold text-[#042d16] shadow-lg shadow-[#0a360c]/20">
-                                {formatPrice(product.price)}
-                              </div>
-                            )}
+                  {(() => {
+                    const regularProducts = visibleInSection.filter((p) => p.id !== 'custom1');
+                    const customProduct = visibleInSection.find((p) => p.id === 'custom1');
+                    const orderedProducts = customProduct ? [...regularProducts, customProduct] : regularProducts;
+                    return orderedProducts.map((product) => (
+                      <article key={product.id} className="group overflow-hidden rounded-[2rem] border border-white/10 bg-[#0e0a08] shadow-luxury transition hover:-translate-y-1 hover:shadow-soft">
+                        <div
+                          className="aspect-[4/5] bg-cover bg-center p-5"
+                          style={{ backgroundImage: brandAccent[product.brand] || 'linear-gradient(135deg, #151515, #3c2f24)' }}
+                        >
+                          <div className="flex h-full flex-col justify-between rounded-[1.75rem] bg-black/30 p-5 text-white backdrop-blur-sm">
+                            <div className="w-full rounded-[1rem] bg-white/90 p-3">
+                              <img
+                                src={`/assets/perfumes/${product.id}.png`}
+                                alt={product.name}
+                                className="mx-auto w-full object-contain aspect-[4/3]"
+                              />
+                            </div>
+                            <div className="space-y-3">
+                              <span className="inline-flex rounded-full bg-black/60 px-3 py-1 text-[11px] uppercase tracking-[0.28em] text-[#d4af37]">{product.brand}</span>
+                              <h4 className="text-2xl font-semibold leading-tight">{product.name}</h4>
+                            </div>
+                            <div className="space-y-2">
+                              <p className="text-sm uppercase tracking-[0.2em] text-white/80">{product.variant}</p>
+                              {product.brand === 'Escolha Personalizada' ? (
+                                <a
+                                  href="https://wa.me/554898098886?text=Ol%C3%A1%2C%20gostaria%20de%20fazer%20meu%20pedido%20personalizado%20com%20o%20vendedor!"
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="block w-full rounded-3xl bg-[#25d366] px-4 py-3 text-center text-base font-semibold text-white shadow-lg transition hover:bg-[#1ebe5d]"
+                                >
+                                  💬 Solicitar no WhatsApp
+                                </a>
+                              ) : (
+                                <div className="rounded-3xl bg-white/90 px-4 py-3 text-xl font-semibold text-[#042d16] shadow-lg shadow-[#0a360c]/20">
+                                  {formatPrice(product.price)}
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div className="space-y-3 p-6">
-                        <div className="flex items-center justify-between text-xs uppercase tracking-[0.2em] text-[#d4af37]">
-                          <span>{product.type || 'Exclusivo'}</span>
-                          <span>{product.category}</span>
+                        <div className="space-y-3 p-6">
+                          <div className="flex items-center justify-between text-xs uppercase tracking-[0.2em] text-[#d4af37]">
+                            <span>{product.type || 'Exclusivo'}</span>
+                            <span>{product.category}</span>
+                          </div>
+                          <p className="text-sm leading-6 text-[#dcd5cc]">
+                            {product.brand === 'Escolha Personalizada'
+                              ? 'Tem um perfume em mente? Solicite aqui e nós encontramos para você!'
+                              : 'Perfume de perfumaria selecionada com design atemporal, acabamento premium e experiência olfativa sofisticada.'}
+                          </p>
                         </div>
-                        <p className="text-sm leading-6 text-[#dcd5cc]">
-                          {product.brand === 'Escolha Personalizada'
-                            ? 'Tem um perfume em mente? Solicite aqui e nós encontramos para você!'
-                            : 'Perfume de perfumaria selecionada com design atemporal, acabamento premium e experiência olfativa sofisticada.'}
-                        </p>
-                      </div>
-                    </article>
-                  ))}
+                      </article>
+                    ));
+                  })()}
                 </div>
               </div>
             );
