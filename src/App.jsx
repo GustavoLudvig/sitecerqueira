@@ -111,7 +111,10 @@ function App() {
     }));
   }, [filteredProducts]);
 
-  const regularProducts = filteredProducts.filter((p) => p.id !== 'custom1');
+  const categoryOrder = { Masculino: 0, Feminino: 1 };
+  const regularProducts = filteredProducts
+    .filter((p) => p.id !== 'custom1')
+    .sort((a, b) => (categoryOrder[a.category] ?? 99) - (categoryOrder[b.category] ?? 99));
   const visibleProducts = regularProducts.slice(0, visibleCount);
   const customCard = products.find((p) => p.id === 'custom1');
 
