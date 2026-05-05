@@ -249,11 +249,13 @@ function App() {
                         style={{ backgroundImage: brandAccent[product.brand] || 'linear-gradient(135deg, #151515, #3c2f24)' }}
                       >
                         <div className="flex h-full flex-col justify-between rounded-[1.75rem] bg-black/30 p-5 text-white backdrop-blur-sm">
-                          <img
-                            src={`/assets/perfumes/${product.id}.png`}
-                            alt={product.name}
-                            className="mx-auto h-48 w-full object-contain"
-                          />
+                          <div className="w-full rounded-[1rem] bg-white/90 p-3">
+                            <img
+                              src={`/assets/perfumes/${product.id}.png`}
+                              alt={product.name}
+                              className="mx-auto w-full object-contain aspect-[4/3]"
+                            />
+                          </div>
                           <div className="space-y-3">
                             <span className="inline-flex rounded-full bg-black/60 px-3 py-1 text-[11px] uppercase tracking-[0.28em] text-[#d4af37]">{product.brand}</span>
                             <h4 className="text-2xl font-semibold leading-tight">{product.name}</h4>
