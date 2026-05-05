@@ -4,6 +4,7 @@ const banners = ['/assets/banner1.png', '/assets/banner2.png', '/assets/banner3.
 const categories = ['Masculino', 'Feminino'];
 const brandFilters = [
   'Todos',
+  'Escolha Personalizada',
   'Dior',
   'Paco Rabanne',
   'Carolina Herrera',
@@ -19,6 +20,15 @@ const brandFilters = [
 
 const products = [
   { id: 'pr1', category: 'Masculino', brand: 'Paco Rabanne', name: 'Invictus', variant: '100ml', price: 400, type: 'EdT' },
+  {
+    id: 'custom1',
+    category: 'Masculino',
+    brand: 'Escolha Personalizada',
+    name: 'Escolha Personalizada',
+    variant: '',
+    price: 0,
+    type: ''
+  },
   { id: 'pr2', category: 'Masculino', brand: 'Paco Rabanne', name: 'Invictus', variant: '200ml', price: 650, type: 'EdT' },
   { id: 'pr3', category: 'Masculino', brand: 'Paco Rabanne', name: 'One Million', variant: '100ml', price: 480, type: 'EdT' },
   { id: 'pr4', category: 'Masculino', brand: 'Paco Rabanne', name: 'One Million', variant: '200ml', price: 700, type: 'EdT' },
@@ -78,6 +88,7 @@ const brandAccent = {
   'Acqua di Giò': 'linear-gradient(135deg, #11212f, #4c6a7a)',
   CK: 'linear-gradient(135deg, #101010, #6b6b6b)',
   Lattafa: 'linear-gradient(135deg, #1f1811, #6e553f)',
+  'Escolha Personalizada': 'linear-gradient(135deg, #2b2b2b, #ffffff22)',
   YSL: 'linear-gradient(135deg, #1f1818, #99784f)',
 };
 
@@ -204,7 +215,15 @@ function App() {
                     key={brand}
                     type="button"
                     onClick={() => setActiveBrand(brand)}
-                    className={`rounded-full border px-4 py-2 text-sm transition ${activeBrand === brand ? 'border-gold bg-[#d4af37] text-black' : 'border-white/10 bg-white/5 text-[#f1eee7] hover:border-[#d4af37] hover:text-[#d4af37]'}`}
+                    className={`rounded-full border px-4 py-2 text-sm transition ${
+                      brand === 'Escolha Personalizada'
+                        ? activeBrand === brand
+                          ? 'border-white bg-white text-black font-semibold'
+                          : 'border-white bg-white/10 text-white font-semibold hover:bg-white hover:text-black'
+                        : activeBrand === brand
+                          ? 'border-gold bg-[#d4af37] text-black'
+                          : 'border-white/10 bg-white/5 text-[#f1eee7] hover:border-[#d4af37] hover:text-[#d4af37]'
+                    }`}
                   >
                     {brand}
                   </button>
@@ -262,9 +281,20 @@ function App() {
                           </div>
                           <div className="space-y-2">
                             <p className="text-sm uppercase tracking-[0.2em] text-white/80">{product.variant}</p>
-                            <div className="rounded-3xl bg-white/90 px-4 py-3 text-xl font-semibold text-[#042d16] shadow-lg shadow-[#0a360c]/20">
-                              {formatPrice(product.price)}
-                            </div>
+                            {product.brand === 'Escolha Personalizada' ? (
+                              <a
+                                href="https://wa.me/554898098886?text=Ol%C3%A1%2C%20gostaria%20de%20fazer%20meu%20pedido%20personalizado%20com%20o%20vendedor!"
+                                target="_blank"
+                                rel="noreferrer"
+                                className="block w-full rounded-3xl bg-[#25d366] px-4 py-3 text-center text-base font-semibold text-white shadow-lg transition hover:bg-[#1ebe5d]"
+                              >
+                                💬 Solicitar no WhatsApp
+                              </a>
+                            ) : (
+                              <div className="rounded-3xl bg-white/90 px-4 py-3 text-xl font-semibold text-[#042d16] shadow-lg shadow-[#0a360c]/20">
+                                {formatPrice(product.price)}
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -273,7 +303,11 @@ function App() {
                           <span>{product.type || 'Exclusivo'}</span>
                           <span>{product.category}</span>
                         </div>
-                        <p className="text-sm leading-6 text-[#dcd5cc]">Perfume de perfumaria selecionada com design atemporal, acabamento premium e experiência olfativa sofisticada.</p>
+                        <p className="text-sm leading-6 text-[#dcd5cc]">
+                          {product.brand === 'Escolha Personalizada'
+                            ? 'Tem um perfume em mente? Solicite aqui e nós encontramos para você!'
+                            : 'Perfume de perfumaria selecionada com design atemporal, acabamento premium e experiência olfativa sofisticada.'}
+                        </p>
                       </div>
                     </article>
                   ))}
