@@ -112,11 +112,8 @@ function App() {
   }, [filteredProducts]);
 
   const regularProducts = filteredProducts.filter((p) => p.id !== 'custom1');
-  const customProduct = filteredProducts.find((p) => p.id === 'custom1');
-  const visibleProducts = [
-    ...regularProducts.slice(0, visibleCount),
-    ...(customProduct ? [customProduct] : []),
-  ];
+  const visibleProducts = regularProducts.slice(0, visibleCount);
+  const customCard = products.find((p) => p.id === 'custom1');
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -238,7 +235,7 @@ function App() {
             <div className="rounded-[1.75rem] bg-[#14100e] p-6 shadow-soft">
               <p className="text-sm uppercase tracking-[0.3em] text-[#d4af37]">Seleção atual</p>
               <h3 className="mt-3 text-2xl font-semibold text-white">{activeBrand === 'Todos' ? 'Todas as marcas' : activeBrand}</h3>
-              <p className="mt-3 text-sm leading-6 text-[#d7d1c8]">Exibindo {visibleProducts.length} de {filteredProducts.length} produtos.</p>
+              <p className="mt-3 text-sm leading-6 text-[#d7d1c8]">Exibindo {visibleProducts.length} de {regularProducts.length} produtos.</p>
               <div className="mt-6 flex flex-wrap gap-3">
                 {categories.map((cat) => (
                   <span key={cat} className="rounded-full bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.22em] text-[#ddd]">
@@ -251,7 +248,7 @@ function App() {
         </section>
 
         <section id="vitrine" className="mx-auto max-w-7xl px-6 pb-16">
-          {groupedByCategory.map(({ category, items }) => {
+          {groupedByCategory.filter(({ category }) => category !== 'Escolha Personalizada').map(({ category, items }) => {
             const visibleInSection = items.filter((item) => visibleProducts.includes(item));
             if (!visibleInSection.length) return null;
             return (
@@ -330,7 +327,7 @@ function App() {
             );
           })}
 
-          {regularProducts.slice(0, visibleCount).length < regularProducts.length && (
+          {visibleProducts.length < regularProducts.length && (
             <div className="mx-auto mt-6 flex max-w-5xl justify-center">
               <button
                 type="button"
@@ -339,6 +336,59 @@ function App() {
               >
                 Carregar mais
               </button>
+            </div>
+          )}
+
+          {customCard && (
+            <div className="mb-12 mt-16">
+              <div className="mb-6 flex items-center justify-between gap-4">
+                <div>
+                  <p className="text-sm uppercase tracking-[0.3em] text-white">Não encontrou o que procura?</p>
+                  <h3 className="mt-2 text-3xl font-semibold text-white">Escolha Personalizada</h3>
+                </div>
+              </div>
+              <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+                <article className="group overflow-hidden rounded-[2rem] border border-white/10 bg-[#0e0a08] shadow-luxury transition hover:-translate-y-1 hover:shadow-soft">
+                  <div
+                    className="aspect-[4/5] bg-cover bg-center p-5"
+                    style={{ backgroundImage: brandAccent['Escolha Personalizada'] }}
+                  >
+                    <div className="flex h-full flex-col justify-between rounded-[1.75rem] bg-black/30 p-5 text-white backdrop-blur-sm">
+                      <div className="w-full rounded-[1rem] bg-white/90 p-3">
+                        <img
+                          src={`/assets/perfumes/custom1.png`}
+                          alt="Escolha Personalizada"
+                          className="mx-auto w-full object-contain aspect-[4/3]"
+                        />
+                      </div>
+                      <div className="space-y-3">
+                        <span className="inline-flex rounded-full bg-black/60 px-3 py-1 text-[11px] uppercase tracking-[0.28em] text-[#d4af37]">Escolha Personalizada</span>
+                        <h4 className="text-2xl font-semibold leading-tight">Escolha Personalizada</h4>
+                      </div>
+                      <div className="space-y-2">
+                        <p className="text-sm uppercase tracking-[0.2em] text-white/80"></p>
+                        <a
+                          href="https://wa.me/554898098886?text=Ol%C3%A1%2C%20gostaria%20de%20fazer%20meu%20pedido%20personalizado%20com%20o%20vendedor!"
+                          target="_blank"
+                          rel="noreferrer"
+                          className="block w-full rounded-3xl bg-[#25d366] px-4 py-3 text-center text-base font-semibold text-white shadow-lg transition hover:bg-[#1ebe5d]"
+                        >
+                          💬 Solicitar no WhatsApp
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="space-y-3 p-6">
+                    <div className="flex items-center justify-between text-xs uppercase tracking-[0.2em] text-[#d4af37]">
+                      <span>Exclusivo</span>
+                      <span>Escolha Personalizada</span>
+                    </div>
+                    <p className="text-sm leading-6 text-[#dcd5cc]">
+                      Tem um perfume em mente? Solicite aqui e nós encontramos para você!
+                    </p>
+                  </div>
+                </article>
+              </div>
             </div>
           )}
         </section>
